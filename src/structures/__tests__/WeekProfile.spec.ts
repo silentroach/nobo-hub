@@ -12,7 +12,7 @@ test('validate normal info', t => {
 	validate({
 		id: 5,
 		name: 'name',
-		program: [[5, 10, Status.Off]]
+		program: [[5, 15, Status.Off]]
 	});
 
 	t.pass();
@@ -22,17 +22,53 @@ test('validate spaces in name', t => {
 	validate({
 		id: 5,
 		name: 'name',
-		program: [[5, 10, Status.Off]]
+		program: [[5, 15, Status.Off]]
 	});
 
 	t.pass();
+});
+
+test('validate throws on invalid program time', t => {
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: 'name',
+			program: [[-5, 15, Status.Off]]
+		})
+	);
+
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: 'name',
+			program: [[25, 15, Status.Off]]
+		})
+	);
+
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: 'name',
+			program: [[5, 75, Status.Off]]
+		})
+	);
+});
+
+test('validate throws on minutes not dividable by 15', t => {
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: 'name',
+			program: [[5, 10, Status.Off]]
+		})
+	);
 });
 
 test('validate throws on invalid name', t => {
 	t.throws(() =>
 		validate({
 			id: 5,
-			program: [[5, 10, Status.Off]],
+			program: [[5, 15, Status.Off]],
 			name: ['name is just t', 'o'.repeat(150), ' long'].join(' ')
 		})
 	);

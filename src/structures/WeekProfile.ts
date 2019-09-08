@@ -19,6 +19,7 @@ export interface WeekProfile {
 	name: string;
 	/**
 	 * List of timestamps (hours + minutes) and status it has in the following time
+	 * Maximum 672 is allowed, minutes should be dividable by 15
 	 */
 	program: Array<[number, number, Status]>;
 }
@@ -33,6 +34,32 @@ export const validate = (profile: WeekProfile) => {
 			'Profile name is too long, maximum 150 bytes allowed (note that spaces are encoded as 2 bytes)'
 		);
 	}
+
+	if (profile.program.length === 0) {
+		throw new TypeError('Empty week profile is not allowed');
+	}
+
+	if (profile.program.length > 672) {
+		throw new TypeError(
+			'Week profile program is too big, maximum allowed length is 672'
+		);
+	}
+
+	profile.program.forEach(([hours, minutes]) => {
+		if (hours < 0 || hours > 23) {
+			throw new TypeError('Invalid hours value for program');
+		}
+
+		if (minutes < 0 || minutes > 59) {
+			throw new TypeError('Invalid minutes value for program');
+		}
+
+		if (minutes % 15 !== 0) {
+			throw new TypeError(
+				'Invalid minutes value for program, it should be dividable by 15'
+			);
+		}
+	});
 };
 
 // <Week profile id> <Name> <Profile>
