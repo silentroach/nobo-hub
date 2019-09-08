@@ -8,6 +8,9 @@ export enum Status {
 }
 
 export interface WeekProfile {
+	/**
+	 * Ignored when you add a week profile, will return new id
+	 */
 	id: number;
 	/**
 	 * Name of week profile. Should be no longer than 150 bytes

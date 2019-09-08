@@ -1,6 +1,9 @@
 import { escapeSpace, unescapeSpace } from '../utils';
 
 export interface Zone {
+	/**
+	 * Ignored when you add a zone, will return new id
+	 */
 	id: number;
 	/**
 	 * Name of zone. Should be no longer than 100 bytes

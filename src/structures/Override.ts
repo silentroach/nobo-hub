@@ -18,6 +18,9 @@ export enum Target {
 }
 
 export interface Override {
+	/**
+	 * Ignored when you add an override, will return new id
+	 */
 	id: number;
 	mode: Mode;
 	type: Type;
