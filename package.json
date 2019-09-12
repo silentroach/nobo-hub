@@ -8,11 +8,11 @@
 	"scripts": {
 		"test": "ava",
 		"cover": "nyc --reporter=html ava",
+		"action": "nyc --reporter=lcov ava -v",
 		"lint": "tslint --project tsconfig.json -t codeFrame",
 		"prebuild": "rimraf dist",
 		"build": "rollup -c rollup.config.ts",
-		"prepublishOnly": "yarn run build",
-		"travis": "nyc --reporter=lcov ava -v; cat ./coverage/lcov.info | coveralls"
+		"prepublishOnly": "yarn run build"
 	},
 	"files": [
 		"dist"
