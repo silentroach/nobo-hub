@@ -29,13 +29,11 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 	let isDone = false;
 	const discovered = new Set<string>();
 	const queue: Hub[] = [];
-	const next: any[] = []; // @todo type?
+	const next: ((value?: IteratorResult<Hub>) => void)[] = [];
 
 	const messageHandler = (messageBuffer: Buffer, remote: RemoteInfo) => {
 		const ip = remote.address;
 		const message = String(messageBuffer);
-
-		// @todo chunked?!?!?!!
 
 		const matches = message.match(/^__NOBOHUB__(?<serial>\d{9})$/);
 		if (!matches) {
@@ -49,7 +47,7 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 			const value: Hub = { ip, serial: matches.groups!.serial };
 
 			if (next.length > 0) {
-				const resolve = next.shift();
+				const resolve = next.shift()!;
 				resolve({ done: false, value });
 
 				return;
@@ -85,7 +83,7 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 		servers.map(server => server.off('message', messageHandler).close());
 
 		while (next.length > 0) {
-			const resolve = next.shift();
+			const resolve = next.shift()!;
 			resolve({ done: true, value: undefined });
 		}
 	};

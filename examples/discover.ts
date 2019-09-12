@@ -1,5 +1,3 @@
-#!/usr/bin/env npx ts-node
-
 import { discover } from '../src';
 
 (async () => {
