@@ -1,16 +1,18 @@
 import { createSocket, RemoteInfo } from 'dgram';
 
-/*
-
-Every two seconds, the Hub sends one UDP broadcast packet on port 10000 to broadcast IP
-255.255.255.255, and one UDP multicast packet on port 10001 to multicast IP 239.0.1.187.
-
-You can use this information to discover Hubs on the network and identify their current IP address
-and the first 9 of the 12 digits of the Hub’s unique serial number.1
-The data that is sent from the Hub is the following ASCII string:
-"__NOBOHUB__123123123", where 123123123 is replaced with the first 9 digits of the Hub’s
-serial number. There are two underscore characters "_" before and after the "NOBOHUB" string.
-
+/**
+ * Every two seconds, the Hub sends one UDP broadcast packet on port 10000 to broadcast IP
+ * 255.255.255.255, and one UDP multicast packet on port 10001 to multicast IP 239.0.1.187.
+ *
+ * We use this information to discover hubs on the network and identify their current ip address
+ * and the first 9 of 12 digist of
+ *
+ * You can use this information to discover Hubs on the network and identify their current IP address
+ * and the first 9 of the 12 digits of the Hub’s unique serial number.
+ *
+ * The data that is sent from the Hub is the following ASCII string:
+ * "__NOBOHUB__123123123", where 123123123 is replaced with the first 9 digits of the Hub’s
+ * serial number. There are two underscore characters "_" before and after the "NOBOHUB" string.
  */
 
 interface Hub {
@@ -22,32 +24,40 @@ interface Hub {
 	serial: string;
 }
 
+interface NextPromiseQueueItem {
+	resolve: (value?: IteratorResult<Hub>) => void;
+	reject: (reason?: any) => void;
+}
+
 /**
  * Iterate over unique hub ips, will run for ~4 seconds or until you break the loop
  */
 export const discover = (): AsyncIterableIterator<Hub> => {
-	let isDone = false;
 	const discovered = new Set<string>();
+
+	let isDone = false;
 	const queue: Hub[] = [];
-	const next: ((value?: IteratorResult<Hub>) => void)[] = [];
+	const next: NextPromiseQueueItem[] = [];
+	let error: Error | undefined;
+	let hasPendingError = false;
 
 	const messageHandler = (messageBuffer: Buffer, remote: RemoteInfo) => {
-		const ip = remote.address;
 		const message = String(messageBuffer);
 
 		const matches = message.match(/^__NOBOHUB__(?<serial>\d{9})$/);
 		if (!matches) {
-			console.warn(`Skipping unknown message from ${ip}: ${message}`);
+			// skipping unknown message
 			return;
 		}
 
+		const { address: ip } = remote;
 		if (!discovered.has(ip)) {
 			discovered.add(ip);
 
 			const value: Hub = { ip, serial: matches.groups!.serial };
 
 			if (next.length > 0) {
-				const resolve = next.shift()!;
+				const { resolve } = next.shift()!;
 				resolve({ done: false, value });
 
 				return;
@@ -67,12 +77,6 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 
 	const servers = [broadcastServer, multicastServer];
 
-	servers.forEach(server => {
-		server.on('message', messageHandler).on('error', error => {
-			console.error('Discovery server error', error);
-		});
-	});
-
 	let timeout: NodeJS.Timeout;
 
 	const cancel = () => {
@@ -83,10 +87,25 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 		servers.map(server => server.off('message', messageHandler).close());
 
 		while (next.length > 0) {
-			const resolve = next.shift()!;
+			const { resolve } = next.shift()!;
 			resolve({ done: true, value: undefined });
 		}
 	};
+
+	servers.forEach(server => {
+		server.on('message', messageHandler).on('error', socketError => {
+			error = socketError;
+
+			if (next.length > 0) {
+				const { reject } = next.shift()!;
+				reject(error);
+			} else {
+				hasPendingError = true;
+			}
+
+			cancel();
+		});
+	});
 
 	// hub sends broadcast every 2 seconds, so we don't need to wait for a next announce
 	timeout = setTimeout(() => cancel(), 2200);
@@ -106,11 +125,16 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 				};
 			}
 
+			if (hasPendingError) {
+				hasPendingError = false;
+				throw error;
+			}
+
 			if (isDone) {
 				return { done: true, value: undefined };
 			}
 
-			return new Promise(resolve => next.push(resolve));
+			return new Promise((resolve, reject) => next.push({ resolve, reject }));
 		},
 
 		async return(value: Hub) {
