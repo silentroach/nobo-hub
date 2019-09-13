@@ -2,6 +2,8 @@ import { serialize, Zone } from '../structures/Zone';
 
 import { command } from '../command';
 
+import { V00 } from '../responses';
+
 /**
  * Updates a zone in the hub internal database
  *
@@ -14,4 +16,4 @@ import { command } from '../command';
  * returns:
  * V00
  */
-export const U00 = (zone: Zone) => command('U00', serialize(zone));
+export default (zone: Zone) => command('U00', serialize(zone)).expect(V00);

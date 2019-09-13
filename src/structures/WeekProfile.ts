@@ -70,7 +70,7 @@ export const deserialize = (input: string): WeekProfile => {
 	);
 
 	if (!matches) {
-		throw new TypeError('Invalid week profile structure');
+		throw new TypeError('Invalid week profile info structure');
 	}
 
 	const groups = matches.groups as {

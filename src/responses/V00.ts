@@ -3,6 +3,6 @@ import { deserialize } from '../structures/Zone';
 import { Response } from '../response';
 
 /**
- * Response for A00 command
+ * Response to the U00 command
  */
-export default new Response('B00', deserialize);
+export default new Response('V00', deserialize);

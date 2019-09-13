@@ -43,7 +43,16 @@ test('validate throws on invalid serial number', t => {
 	);
 });
 
-test('validate throws on invalid name', t => {
+test('validate throws on empty name', t => {
+	t.throws(() => {
+		validate({
+			serialNumber: '200154035201',
+			name: ''
+		});
+	});
+});
+
+test('validate throws on too long name', t => {
 	t.throws(() =>
 		validate({
 			serialNumber: '200154035201',

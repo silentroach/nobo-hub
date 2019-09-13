@@ -1,5 +1,7 @@
 import { serialize, validate, Zone } from '../structures/Zone';
 
+import { B00 } from '../responses';
+
 import { command } from '../command';
 
 /**
@@ -14,7 +16,7 @@ import { command } from '../command';
  * returns:
  * B00
  */
-export const A00 = (zone: Zone) => {
+export default (zone: Zone) => {
 	validate(zone);
-	return command('A00', serialize(zone));
+	return command('A00', serialize(zone)).expect(B00);
 };

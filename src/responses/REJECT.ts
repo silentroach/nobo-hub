@@ -1,3 +1,5 @@
+import { Response } from '../response';
+
 enum RejectReasons {
 	IncompatibleVersion = 0,
 	SerialNumberMismatch = 1,
@@ -5,7 +7,7 @@ enum RejectReasons {
 	TimestampIncorrectlyFormatted = 3
 }
 
-export const REJECT = (input: string): never => {
+export default new Response('REJECT', (input: string): never => {
 	const code = Number(input);
 
 	switch (code) {
@@ -20,4 +22,4 @@ export const REJECT = (input: string): never => {
 		default:
 			throw new TypeError('Unknown reject reason');
 	}
-};
+});

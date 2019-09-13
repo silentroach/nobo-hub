@@ -1,4 +1,6 @@
-export const OK = (): void => {
-	// nothing to do here
-	return;
-};
+import { Response } from '../response';
+
+/**
+ * Response to KEEPALIVE command with no data
+ */
+export default new Response('OK');

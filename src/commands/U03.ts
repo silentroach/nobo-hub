@@ -14,4 +14,5 @@ import { command } from '../command';
  * returns:
  * V03
  */
-export const U03 = (override: Override) => command('U03', serialize(override));
+export default (override: Override) => command('U03', serialize(override));
+// @expect V03

@@ -2,6 +2,8 @@ import { Component, serialize, validate } from '../structures/Component';
 
 import { command } from '../command';
 
+import { B01 } from '../responses';
+
 /**
  * Adds a component to the hub internal database
  *
@@ -14,7 +16,7 @@ import { command } from '../command';
  * returns:
  * B01
  */
-export const A01 = (component: Component) => {
+export default (component: Component) => {
 	validate(component);
-	return command('A01', serialize(component));
+	return command('A01', serialize(component)).expect(B01);
 };

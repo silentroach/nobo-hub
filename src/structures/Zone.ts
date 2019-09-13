@@ -69,7 +69,7 @@ export const deserialize = (input: string): Zone => {
 	);
 
 	if (!matches) {
-		throw new TypeError('Invalid zone structure');
+		throw new TypeError('Invalid zone info structure');
 	}
 
 	const groups = matches.groups as {

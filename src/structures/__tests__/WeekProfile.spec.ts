@@ -28,6 +28,36 @@ test('validate spaces in name', t => {
 	t.pass();
 });
 
+test('validate throws on empty name', t => {
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: '',
+			program: [[5, 15, Status.Off]]
+		})
+	);
+});
+
+test('validate throws on invalid name', t => {
+	t.throws(() =>
+		validate({
+			id: 5,
+			program: [[5, 15, Status.Off]],
+			name: ['name is just t', 'o'.repeat(150), ' long'].join(' ')
+		})
+	);
+});
+
+test('validate throws on empty program ', t => {
+	t.throws(() =>
+		validate({
+			id: 5,
+			name: 'name',
+			program: []
+		})
+	);
+});
+
 test('validate throws on invalid program time', t => {
 	t.throws(() =>
 		validate({
@@ -60,16 +90,6 @@ test('validate throws on minutes not dividable by 15', t => {
 			id: 5,
 			name: 'name',
 			program: [[5, 10, Status.Off]]
-		})
-	);
-});
-
-test('validate throws on invalid name', t => {
-	t.throws(() =>
-		validate({
-			id: 5,
-			program: [[5, 15, Status.Off]],
-			name: ['name is just t', 'o'.repeat(150), ' long'].join(' ')
 		})
 	);
 });

@@ -2,6 +2,8 @@ import { Override, serialize, validate } from '../structures/Override';
 
 import { command } from '../command';
 
+import { B03 } from '../responses';
+
 /**
  * Adds an override to the hub internal database
  *
@@ -14,7 +16,7 @@ import { command } from '../command';
  * returns:
  * B03
  */
-export const A03 = (override: Override) => {
+export default (override: Override) => {
 	validate(override);
-	return command('A03', serialize(override));
+	return command('A03', serialize(override)).expect(B03);
 };

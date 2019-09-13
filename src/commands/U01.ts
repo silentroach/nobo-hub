@@ -14,5 +14,5 @@ import { command } from '../command';
  * returns:
  * V01
  */
-export const U01 = (component: Component) =>
-	command('U01', serialize(component));
+export default (component: Component) => command('U01', serialize(component));
+// @todo expect V01

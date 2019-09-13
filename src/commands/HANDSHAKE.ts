@@ -1,5 +1,7 @@
 import { command } from '../command';
 
+import { HANDSHAKE } from '../responses';
+
 /**
  * Handshake command, send after HELLO
  *
@@ -9,4 +11,4 @@ import { command } from '../command';
  * returns:
  * HANDSHAKE
  */
-export const HANDSHAKE = () => command('HANDSHAKE');
+export default () => command('HANDSHAKE').expect(HANDSHAKE);

@@ -1,5 +1,7 @@
 import { command } from '../command';
 
+import { HELLO, REJECT } from '../responses';
+
 /**
  * First command to send after connection
  *
@@ -10,9 +12,9 @@ import { command } from '../command';
  * HELLO 1.1 102000000123 20131220092040
  *
  * returns:
- * HELLO
+ * HELLO REJECT
  */
-export const HELLO = (serialNumber: string) => {
+export default (serialNumber: string) => {
 	const date = new Date();
 
 	return command(
@@ -29,5 +31,5 @@ export const HELLO = (serialNumber: string) => {
 				date.getSeconds()
 			].map(value => String(value).padStart(2, '0'))
 		].join('')
-	);
+	).expect(HELLO, REJECT);
 };

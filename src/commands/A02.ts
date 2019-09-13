@@ -2,6 +2,8 @@ import { serialize, validate, WeekProfile } from '../structures/WeekProfile';
 
 import { command } from '../command';
 
+import { B02 } from '../responses';
+
 /**
  * Adds a week profile to the hub internal database
  *
@@ -14,7 +16,7 @@ import { command } from '../command';
  * returns:
  * B02
  */
-export const A02 = (profile: WeekProfile) => {
+export default (profile: WeekProfile) => {
 	validate(profile);
-	return command('A02', serialize(profile));
+	return command('A02', serialize(profile)).expect(B02);
 };

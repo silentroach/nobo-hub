@@ -69,7 +69,7 @@ export const deserialize = (input: string): Override => {
 	);
 
 	if (!matches) {
-		throw new TypeError('Invalid override structure');
+		throw new TypeError('Invalid override info structure');
 	}
 
 	const groups = matches.groups as {

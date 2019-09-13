@@ -14,4 +14,5 @@ import { command } from '../command';
  * returns:
  * V02
  */
-export const U02 = (profile: WeekProfile) => command('U02', serialize(profile));
+export default (profile: WeekProfile) => command('U02', serialize(profile));
+// @todo expect V02

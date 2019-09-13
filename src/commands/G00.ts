@@ -1,5 +1,7 @@
 import { command } from '../command';
 
+import { H00, H01, H02, H03, H04, Y02 } from '../responses';
+
 /**
  * Gets all information from hub
  *
@@ -10,8 +12,18 @@ import { command } from '../command';
  * G00
  *
  * returns:
- * H00, H01, H02, Y02, H03, H04, V06
+ * H01, H02, H03, H04, Y02, V06
  *
- * stop-response: H05
+ * start: H00
+ * stop: H05
  */
-export const G00 = () => command('G00');
+export default () =>
+	command('G00').expect(
+		H00,
+		H01,
+		H02,
+		H03,
+		H04,
+		Y02
+		// @todo V06
+	);

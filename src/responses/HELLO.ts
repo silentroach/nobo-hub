@@ -1,3 +1,5 @@
+import { Response } from '../response';
+
 /**
  * Hello command response message with hub version of command set
  *
@@ -7,4 +9,4 @@
  * example
  * HELLO 1.1
  */
-export const HELLO = (input: string): string => input;
+export default new Response('HELLO', (input: string): string => input);

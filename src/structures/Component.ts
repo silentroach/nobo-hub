@@ -58,7 +58,7 @@ export const deserialize = (input: string): Component => {
 	);
 
 	if (!matches) {
-		throw new TypeError('Invalid component structure');
+		throw new TypeError('Invalid component info structure');
 	}
 
 	const groups = matches.groups as {

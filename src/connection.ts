@@ -1,9 +1,10 @@
 import { EventEmitter } from 'events';
 import { Socket } from 'net';
 
-import chalk from 'chalk';
+// import chalk from 'chalk';
 
 import { G00, HANDSHAKE, HELLO, KEEPALIVE } from './commands';
+import { Command } from './command';
 
 class Connection extends EventEmitter {
 	private lock: Promise<any> = Promise.resolve();
@@ -18,19 +19,19 @@ class Connection extends EventEmitter {
 			const returnIndex = data.indexOf(13);
 
 			console.log(
-				chalk.green(String(data.slice(0, returnIndex))),
-				chalk.whiteBright('.')
+				/*chalk.green(*/ String(data.slice(0, returnIndex)) //),
+				/*chalk.whiteBright('.')*/
 			);
 		});
 	}
 
-	public async send(command: string): Promise<void> {
+	public async send(command: Command): Promise<void> {
 		await this.lock;
 
 		this.lock = new Promise((resolve, reject) => {
-			console.log(chalk.yellow(command));
+			console.log(/*chalk.yellow(*/ command /*)*/);
 
-			this.socket.write(command, error => {
+			this.socket.write([command, ''].join('\r'), error => {
 				if (error) {
 					reject(error);
 					return;
