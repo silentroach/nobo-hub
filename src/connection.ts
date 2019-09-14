@@ -61,8 +61,21 @@ export const connect = async (
 	ip: string,
 	port: number = 27779
 ) => {
-	const socket = new Socket({});
-	await new Promise(resolve => socket.connect(port, ip, resolve));
+	const socket = new Socket();
+
+	try {
+		await Promise.race([
+			new Promise(resolve => socket.connect(port, ip, resolve)),
+			new Promise((resolve, reject) =>
+				// @todo better error
+				// @todo make timeout value configurable
+				setTimeout(() => reject('Timeout'), 1000)
+			)
+		]);
+	} catch (e) {
+		socket.destroy();
+		throw e;
+	}
 
 	const connection = new Connection(socket);
 	await connection.send(HELLO(serial));
