@@ -24,6 +24,9 @@ jobs:
       - name: test
         run: yarn action
 
+      - name: compile check
+        run: tsc --noEmit
+
       - name: upload to coveralls
         uses: coverallsapp/github-action@master
         with:
