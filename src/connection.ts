@@ -3,8 +3,8 @@ import { Socket } from 'net';
 
 // import chalk from 'chalk';
 
-import { G00, HANDSHAKE, HELLO, KEEPALIVE } from './commands';
 import { Command } from './command';
+import { G00, HANDSHAKE, HELLO, KEEPALIVE } from './commands';
 
 class Connection extends EventEmitter {
 	private lock: Promise<any> = Promise.resolve();
@@ -19,13 +19,15 @@ class Connection extends EventEmitter {
 			const returnIndex = data.indexOf(13);
 
 			console.log(
-				/*chalk.green(*/ String(data.slice(0, returnIndex)) //),
+				/*chalk.green(*/ String(data.slice(0, returnIndex)) // ),
 				/*chalk.whiteBright('.')*/
 			);
 		});
 	}
 
-	public async send(command: Command): Promise<void> {
+	public async send<T extends object | string = any>(
+		command: Command<T>
+	): Promise<void> {
 		await this.lock;
 
 		this.lock = new Promise((resolve, reject) => {

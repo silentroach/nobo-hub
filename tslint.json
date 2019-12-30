@@ -5,6 +5,7 @@
 		"no-console": false,
 		"interface-name": [true, "never-prefix"],
 		"space-before-function-paren": false,
-		"no-shadowed-variable": false
+		"no-shadowed-variable": false,
+		"max-classes-per-file": false
 	}
 }

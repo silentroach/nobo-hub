@@ -1,5 +1,5 @@
-import { Response } from '../response';
 import { CommandError } from '../command';
+import { Response } from '../response';
 
 /**
  * Error message

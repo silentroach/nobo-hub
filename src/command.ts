@@ -11,20 +11,22 @@ export class CommandError extends Error {
 	}
 }
 
-export class Command {
-	private readonly expectations: Map<string, Response<any>> = new Map();
+// @todo terminator?
+export class Command<K extends object | string = any> {
+	private readonly expectations: Map<string, Response<K>> = new Map();
 
 	constructor(private readonly value: string) {}
 
-	expect(...response: Response<any>[]): this {
-		([] as Response<any>[]).concat(response).forEach(one => {
+	public expect<T extends Response<K>>(...response: T[]): this {
+		const responses = ([] as T[]).concat(response);
+		responses.forEach(one => {
 			this.expectations.set(one.name, one);
 		});
 
 		return this;
 	}
 
-	toString(): string {
+	public toString(): string {
 		return this.value;
 	}
 }

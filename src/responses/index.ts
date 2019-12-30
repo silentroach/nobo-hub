@@ -1,8 +1,8 @@
 // Common
 import HANDSHAKE from './HANDSHAKE';
 import HELLO from './HELLO';
-import REJECT from './REJECT';
 import OK from './OK';
+import REJECT from './REJECT';
 
 // Add
 import B00 from './B00';
