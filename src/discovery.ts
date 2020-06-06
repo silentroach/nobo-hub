@@ -84,7 +84,7 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 
 		clearTimeout(timeout);
 
-		servers.map(server => server.off('message', messageHandler).close());
+		servers.map((server) => server.off('message', messageHandler).close());
 
 		while (next.length > 0) {
 			const { resolve } = next.shift()!;
@@ -92,8 +92,8 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 		}
 	};
 
-	servers.forEach(server => {
-		server.on('message', messageHandler).on('error', socketError => {
+	servers.forEach((server) => {
+		server.on('message', messageHandler).on('error', (socketError) => {
 			error = socketError;
 
 			if (next.length > 0) {
@@ -121,7 +121,7 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 
 				return {
 					done: isDone && queue.length === 0,
-					value
+					value,
 				};
 			}
 
@@ -140,6 +140,6 @@ export const discover = (): AsyncIterableIterator<Hub> => {
 		async return(value: Hub) {
 			cancel();
 			return { done: isDone, value };
-		}
+		},
 	};
 };

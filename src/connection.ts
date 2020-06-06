@@ -33,7 +33,7 @@ class Connection extends EventEmitter {
 		this.lock = new Promise((resolve, reject) => {
 			console.log(/*chalk.yellow(*/ command /*)*/);
 
-			this.socket.write([command, ''].join('\r'), error => {
+			this.socket.write([command, ''].join('\r'), (error) => {
 				if (error) {
 					reject(error);
 					return;
@@ -67,12 +67,12 @@ export const connect = async (
 
 	try {
 		await Promise.race([
-			new Promise(resolve => socket.connect(port, ip, resolve)),
+			new Promise((resolve) => socket.connect(port, ip, resolve)),
 			new Promise((resolve, reject) =>
 				// @todo better error
 				// @todo make timeout value configurable
 				setTimeout(() => reject('Timeout'), 1000)
-			)
+			),
 		]);
 	} catch (e) {
 		socket.destroy();

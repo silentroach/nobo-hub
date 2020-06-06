@@ -38,7 +38,7 @@ export const deserialize = (input: string): Hub => {
 		defaultAwayOverrideLength: Number(groups.overrideLength),
 		softwareVersion: Number(groups.soft),
 		hardwareVersion: groups.hard,
-		productionDate: Number(groups.date)
+		productionDate: Number(groups.date),
 	};
 
 	const activeOverrideId = Number(groups.override);

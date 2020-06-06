@@ -4,7 +4,7 @@ import test from 'ava';
 
 import { discover } from '../discovery';
 
-test.serial('discover hubs by udp broadcast to 10000 port', async t => {
+test.serial('discover hubs by udp broadcast to 10000 port', async (t) => {
 	const serialPart = '123456789';
 	const client = dgram.createSocket('udp4');
 
@@ -36,7 +36,7 @@ test.serial('discover hubs by udp broadcast to 10000 port', async t => {
 	t.is(hub.serial, serialPart);
 });
 
-test.serial('stop to listen after loop break', async t => {
+test.serial('stop to listen after loop break', async (t) => {
 	const client = dgram.createSocket('udp4');
 
 	t.plan(2);
@@ -63,7 +63,7 @@ test.serial('stop to listen after loop break', async t => {
 	}
 
 	// waiting for 300 timeout to trigger
-	await new Promise(resolve => setTimeout(resolve, 500));
+	await new Promise((resolve) => setTimeout(resolve, 500));
 
 	client.close();
 

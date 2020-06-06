@@ -9,7 +9,7 @@ import { discover } from '../src';
 
 		console.log('Hub discovered:', {
 			ip,
-			serial: [serial, 'xxx'].join('')
+			serial: [serial, 'xxx'].join(''),
 		});
 	}
 

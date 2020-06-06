@@ -19,7 +19,7 @@ export class Command<K extends object | string = any> {
 
 	public expect<T extends Response<K>>(...response: T[]): this {
 		const responses = ([] as T[]).concat(response);
-		responses.forEach(one => {
+		responses.forEach((one) => {
 			this.expectations.set(one.name, one);
 		});
 

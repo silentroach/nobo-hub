@@ -35,7 +35,7 @@ export default new Response(
 		return {
 			serial: groups.serial,
 			temperature:
-				groups.temperature === 'N/A' ? undefined : Number(groups.temperature)
+				groups.temperature === 'N/A' ? undefined : Number(groups.temperature),
 		};
 	}
 );

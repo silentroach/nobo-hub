@@ -31,7 +31,7 @@ export const validate = (component: Component) => {
 	if (
 		!serialNumberParts ||
 		serialNumberParts.length !== 4 ||
-		serialNumberParts.map(Number).some(part => part > 255 || part < 0)
+		serialNumberParts.map(Number).some((part) => part > 255 || part < 0)
 	) {
 		throw new TypeError(
 			'Invalid component serial number, must be 4 groups of integer no higher than 255'
@@ -71,7 +71,7 @@ export const deserialize = (input: string): Component => {
 
 	const component: Component = {
 		serialNumber: groups.serial,
-		name: unescapeSpace(groups.name)
+		name: unescapeSpace(groups.name),
 	};
 
 	const zoneId = Number(groups.zoneId);
@@ -95,5 +95,5 @@ export const serialize = (component: Component) =>
 		/** reverse, @todo */ 0,
 		component.zoneId !== undefined ? component.zoneId : -1,
 		/** active override id, reserved, not used */ -1,
-		component.sensorForZoneId !== undefined ? component.sensorForZoneId : -1
+		component.sensorForZoneId !== undefined ? component.sensorForZoneId : -1,
 	].join(' ');

@@ -4,7 +4,7 @@ enum RejectReasons {
 	IncompatibleVersion = 0,
 	SerialNumberMismatch = 1,
 	WrongNumberOfArguments = 2,
-	TimestampIncorrectlyFormatted = 3
+	TimestampIncorrectlyFormatted = 3,
 }
 
 export default new Response('REJECT', (input: string): never => {

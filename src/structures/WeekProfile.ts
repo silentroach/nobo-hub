@@ -4,7 +4,7 @@ export enum Status {
 	Eco = 0,
 	Comfort = 1,
 	Away = 2,
-	Off = 3
+	Off = 3,
 }
 
 export interface WeekProfile {
@@ -84,11 +84,11 @@ export const deserialize = (input: string): WeekProfile => {
 		name: unescapeSpace(groups.name),
 		program: groups.profile
 			.split(',')
-			.map(value => [
+			.map((value) => [
 				Number(value.substr(0, 2)),
 				Number(value.substr(2, 2)),
-				Number(value.substr(4, 1))
-			])
+				Number(value.substr(4, 1)),
+			]),
 	};
 };
 
@@ -100,9 +100,9 @@ export const serialize = (profile: WeekProfile) =>
 		profile.program
 			.map(([hours, minutes, status]) =>
 				[
-					...[hours, minutes].map(value => String(value).padStart(2, '0')),
-					status
+					...[hours, minutes].map((value) => String(value).padStart(2, '0')),
+					status,
 				].join('')
 			)
-			.join(',')
+			.join(','),
 	].join(' ');

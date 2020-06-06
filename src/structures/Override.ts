@@ -2,19 +2,19 @@ export enum Mode {
 	Normal = 0,
 	Comfort = 1,
 	Eco = 2,
-	Away = 3
+	Away = 3,
 }
 
 export enum Type {
 	Now = 0,
 	Timer = 1,
 	FromTo = 2,
-	Constant = 3
+	Constant = 3,
 }
 
 export enum Target {
 	Hub = 0,
-	Zone = 1
+	Zone = 1,
 }
 
 export interface Override {
@@ -86,7 +86,7 @@ export const deserialize = (input: string): Override => {
 		id: Number(groups.id),
 		mode: Number(groups.mode),
 		type: Number(groups.type),
-		target: Number(groups.target)
+		target: Number(groups.target),
 	};
 
 	// @todo start + end
@@ -107,5 +107,5 @@ export const serialize = (override: Override) =>
 		override.type === Type.FromTo ? override.endTime : -1,
 		override.type === Type.FromTo ? override.startTime : -1,
 		override.target,
-		override.target === Target.Zone ? override.targetId : -1
+		override.target === Target.Zone ? override.targetId : -1,
 	].join(' ');

@@ -87,7 +87,7 @@ export const deserialize = (input: string): Zone => {
 		activeWeekProfileId: Number(groups.week),
 		comfortTemperature: Number(groups.comfort),
 		ecoTemperature: Number(groups.eco),
-		allowOverrides: Boolean(Number(groups.overrides))
+		allowOverrides: Boolean(Number(groups.overrides)),
 	};
 };
 
@@ -100,5 +100,5 @@ export const serialize = (zone: Zone) =>
 		zone.comfortTemperature,
 		zone.ecoTemperature,
 		zone.allowOverrides ? 1 : 0,
-		/** active override id, reserved, not used */ 1
+		/** active override id, reserved, not used */ 1,
 	].join(' ');

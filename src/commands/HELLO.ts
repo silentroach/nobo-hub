@@ -28,8 +28,8 @@ export default (serialNumber: string) => {
 				date.getDay(),
 				date.getHours(),
 				date.getMinutes(),
-				date.getSeconds()
-			].map(value => String(value).padStart(2, '0'))
+				date.getSeconds(),
+			].map((value) => String(value).padStart(2, '0')),
 		].join('')
 	).expect(HELLO, REJECT);
 };
