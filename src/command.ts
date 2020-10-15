@@ -26,6 +26,19 @@ export class Command<K extends object | string = any> {
 		return this;
 	}
 
+	public processResponse(code: string, data?: string): K | string | undefined {
+		const expectation = this.expectations.get(code);
+		if (!expectation || data === undefined) {
+			return;
+		}
+
+		if (expectation.handler) {
+			return expectation.handler(data);
+		}
+
+		return data;
+	}
+
 	public toString(): string {
 		return this.value;
 	}

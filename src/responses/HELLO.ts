@@ -1,3 +1,5 @@
+import { deserialize } from '../structures/Version';
+
 import { Response } from '../response';
 
 /**
@@ -9,4 +11,4 @@ import { Response } from '../response';
  * example
  * HELLO 1.1
  */
-export default new Response('HELLO', (input: string): string => input);
+export default new Response('HELLO', deserialize);

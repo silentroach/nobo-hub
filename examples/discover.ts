@@ -1,4 +1,4 @@
-import { discover } from '../src';
+import { discover } from '../';
 
 (async () => {
 	console.log('Trying to discover Nobø Hubs in local network...');
