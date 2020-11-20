@@ -25,7 +25,7 @@ interface Hub {
 }
 
 interface NextPromiseQueueItem {
-	resolve: (value?: IteratorResult<Hub>) => void;
+	resolve: (value: IteratorResult<Hub>) => void;
 	reject: (reason?: any) => void;
 }
 
