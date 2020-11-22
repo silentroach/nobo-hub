@@ -9,56 +9,24 @@
 		"node": ">=14.0.0"
 	},
 	"scripts": {
-		"test": "ava",
-		"cover": "nyc --reporter=html ava",
-		"action": "nyc --reporter=lcov ava -v",
-		"lint": "tslint --project tsconfig.json -t codeFrame",
-		"prebuild": "rimraf dist",
-		"build": "rollup -c rollup.config.ts",
-		"prepublishOnly": "yarn run build"
+		"test": "jest",
+		"cover": "jest --coverage --coverageReporters=\"html-spa\"",
+		"action": "jest --coverage --coverageReporters=\"lcov\""
 	},
-	"files": [
-		"dist"
-	],
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
 	"devDependencies": {
-		"@istanbuljs/nyc-config-typescript": "^1.0.1",
-		"ava": "^3.8.2",
+		"@types/jest": "^26.0.15",
 		"chalk": "^4.0.0",
 		"coveralls": "^3.0.6",
 		"husky": "^4.2.5",
-		"nyc": "^15.1.0",
+		"jest": "^26.6.3",
 		"prettier": "^2.0.5",
 		"pretty-quick": "^3.1.0",
-		"rimraf": "^3.0.0",
-		"rollup": "^2.13.1",
-		"rollup-plugin-node-resolve": "^5.2.0",
-		"rollup-plugin-typescript2": "^0.29.0",
-		"source-map-support": "^0.5.13",
+		"ts-jest": "^26.4.4",
 		"ts-node": "^9.0.0",
-		"tslib": "^2.0.0",
 		"typescript": "^4.1.2"
-	},
-	"dependencies": {},
-	"ava": {
-		"files": [
-			"src/**/*.spec.*"
-		],
-		"extensions": [
-			"ts"
-		],
-		"require": [
-			"ts-node/register"
-		]
-	},
-	"nyc": {
-		"extends": "@istanbuljs/nyc-config-typescript",
-		"include": [
-			"src/"
-		],
-		"all": true
 	},
 	"husky": {
 		"hooks": {

@@ -1,10 +1,8 @@
 import dgram from 'dgram';
 
-import test from 'ava';
-
 import { discover } from '../discovery';
 
-test.serial('discover hubs by udp broadcast to 10000 port', async (t) => {
+it('discover hubs by udp broadcast to 10000 port', async () => {
 	const serialPart = '123456789';
 	const client = dgram.createSocket('udp4');
 
@@ -14,7 +12,9 @@ test.serial('discover hubs by udp broadcast to 10000 port', async (t) => {
 
 	setTimeout(() => send('some message'), 100);
 	setTimeout(() => send(`__NOBOHUB__${serialPart}`), 200);
-	setTimeout(() => send(`__NOBOHUB__${serialPart}`), 300); // should be ignored (already discovered)
+
+	// should be ignored (already discovered)
+	setTimeout(() => send(`__NOBOHUB__${serialPart}`), 300);
 
 	const discovered = [];
 	for await (const hub of discover()) {
@@ -28,28 +28,25 @@ test.serial('discover hubs by udp broadcast to 10000 port', async (t) => {
 
 	client.close();
 
-	t.is(discovered.length, 1, 'Invalid discovered hubs count');
+	expect(discovered.length).toBe(1);
 
 	const [hub] = discovered;
 
-	t.is(hub.ip, '127.0.0.1');
-	t.is(hub.serial, serialPart);
+	expect(hub.ip).toBe('127.0.0.1');
+	expect(hub.serial).toBe(serialPart);
 });
 
-test.serial('stop to listen after loop break', async (t) => {
+it('stop to listen after loop break', async () => {
 	const client = dgram.createSocket('udp4');
-
-	t.plan(2);
 
 	const send = (message: string): void => {
 		client.send(message, 0, message.length, 10000, '127.0.0.1');
 	};
 
+	const sendMock = jest.fn(() => send('__NOBOHUB__987654321'));
+
 	setTimeout(() => send(`__NOBOHUB__123456789`), 200);
-	setTimeout(() => {
-		send(`__NOBOHUB__987654321`);
-		t.pass();
-	}, 300); // not listening
+	setTimeout(sendMock, 300); // not listening
 
 	const discovered = [];
 	for await (const hub of discover()) {
@@ -67,5 +64,6 @@ test.serial('stop to listen after loop break', async (t) => {
 
 	client.close();
 
-	t.is(discovered.length, 1, 'Invalid discovered hubs count');
+	expect(sendMock).toBeCalled();
+	expect(discovered.length).toBe(1);
 });

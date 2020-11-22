@@ -1,125 +1,123 @@
-import test from 'ava';
-
 import { Component, deserialize, serialize, validate } from '../Component';
 
-test('validate normal info', (t) => {
-	validate({
-		serialNumber: '200154035201',
-		name: 'name',
-	});
-
-	t.pass();
-});
-
-test('validate spaces in name', (t) => {
-	validate({
-		serialNumber: '200154035201',
-		name: 'name with multiple words',
-	});
-
-	t.pass();
-});
-
-test('validate throws on invalid serial number', (t) => {
-	t.throws(() =>
-		validate({
-			serialNumber: 'just bad',
-			name: 'name',
-		})
-	);
-
-	t.throws(() =>
-		validate({
-			serialNumber: '20015403520112345',
-			name: 'name',
-		})
-	);
-
-	t.throws(() =>
-		validate({
-			serialNumber: '300154035201',
-			name: 'name',
-		})
-	);
-});
-
-test('validate throws on empty name', (t) => {
-	t.throws(() => {
+describe('validation', () => {
+	it('validate normal info', () => {
 		validate({
 			serialNumber: '200154035201',
-			name: '',
+			name: 'name',
 		});
 	});
-});
 
-test('validate throws on too long name', (t) => {
-	t.throws(() =>
+	it('validate spaces in name', () => {
 		validate({
 			serialNumber: '200154035201',
-			name: ['name is just t', 'o'.repeat(100), ' long'].join(' '),
-		})
-	);
+			name: 'name with multiple words',
+		});
+	});
+
+	it('validate throws on invalid serial number', () => {
+		expect(() =>
+			validate({
+				serialNumber: 'just bad',
+				name: 'name',
+			})
+		).toThrow();
+
+		expect(() =>
+			validate({
+				serialNumber: '20015403520112345',
+				name: 'name',
+			})
+		).toThrow();
+
+		expect(() =>
+			validate({
+				serialNumber: '300154035201',
+				name: 'name',
+			})
+		).toThrow();
+	});
+
+	it('validate throws on empty name', () => {
+		expect(() => {
+			validate({
+				serialNumber: '200154035201',
+				name: '',
+			});
+		}).toThrow();
+	});
+
+	it('validate throws on too long name', () => {
+		expect(() =>
+			validate({
+				serialNumber: '200154035201',
+				name: ['name is just t', 'o'.repeat(100), ' long'].join(' '),
+			})
+		).toThrow();
+	});
 });
 
-test('serialize minimal component info', (t) => {
-	const component: Component = { serialNumber: '200154035201', name: 'name' };
+describe('serialization', () => {
+	it('serialize minimal component info', () => {
+		const component: Component = { serialNumber: '200154035201', name: 'name' };
 
-	const serialized = serialize(component);
-	t.snapshot(serialized);
+		const serialized = serialize(component);
+		expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), component);
-});
+		expect(deserialize(serialized)).toEqual(component);
+	});
 
-test('escape component name with spaces and emoji', (t) => {
-	const component: Component = {
-		serialNumber: '200154035201',
-		name: 'some utf 🦄 name',
-	};
+	it('escape component name with spaces and emoji', () => {
+		const component: Component = {
+			serialNumber: '200154035201',
+			name: 'some utf 🦄 name',
+		};
 
-	const serialized = serialize(component);
-	t.snapshot(serialized);
+		const serialized = serialize(component);
+		expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), component);
-});
+		expect(deserialize(serialized)).toEqual(component);
+	});
 
-test('escape component name with spaces', (t) => {
-	const component: Component = {
-		serialNumber: '200154035201',
-		name: 'some name',
-	};
+	it('escape component name with spaces', () => {
+		const component: Component = {
+			serialNumber: '200154035201',
+			name: 'some name',
+		};
 
-	const serialized = serialize(component);
-	t.snapshot(serialized);
+		const serialized = serialize(component);
+		expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), component);
-});
+		expect(deserialize(serialized)).toEqual(component);
+	});
 
-test('serialize component with zone id', (t) => {
-	const component: Component = {
-		serialNumber: '200154035201',
-		name: 'name',
-		zoneId: 5,
-	};
+	it('serialize component with zone id', () => {
+		const component: Component = {
+			serialNumber: '200154035201',
+			name: 'name',
+			zoneId: 5,
+		};
 
-	const serialized = serialize(component);
-	t.snapshot(serialized);
+		const serialized = serialize(component);
+		expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), component);
-});
+		expect(deserialize(serialized)).toEqual(component);
+	});
 
-test('serialize component as a zone sensor', (t) => {
-	const component: Component = {
-		serialNumber: '200154035201',
-		name: 'name',
-		sensorForZoneId: 5,
-	};
+	it('serialize component as a zone sensor', () => {
+		const component: Component = {
+			serialNumber: '200154035201',
+			name: 'name',
+			sensorForZoneId: 5,
+		};
 
-	const serialized = serialize(component);
-	t.snapshot(serialized);
+		const serialized = serialize(component);
+		expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), component);
-});
+		expect(deserialize(serialized)).toEqual(component);
+	});
 
-test('deserializer throws on invalid data', (t) => {
-	t.throws(() => deserialize('some invalid data'));
+	it('deserializer throws on invalid data', () => {
+		expect(() => deserialize('some invalid data'));
+	});
 });

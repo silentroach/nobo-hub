@@ -1,5 +1,3 @@
-import test from 'ava';
-
 import {
 	deserialize,
 	Mode,
@@ -9,7 +7,7 @@ import {
 	Type,
 } from '../Override';
 
-test('should serialize/deserialize minimal override info', (t) => {
+it('serialize/deserialize minimal override info', () => {
 	const override: Override = {
 		id: 5,
 		mode: Mode.Normal,
@@ -18,12 +16,12 @@ test('should serialize/deserialize minimal override info', (t) => {
 	};
 
 	const serialized = serialize(override);
-	t.snapshot(serialized);
+	expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), override);
+	expect(deserialize(serialized)).toEqual(override);
 });
 
-test('should serialize/deserialize override info with zone target', (t) => {
+it('serialize/deserialize override info with zone target', () => {
 	const override: Override = {
 		id: 5,
 		mode: Mode.Normal,
@@ -33,7 +31,7 @@ test('should serialize/deserialize override info with zone target', (t) => {
 	};
 
 	const serialized = serialize(override);
-	t.snapshot(serialized);
+	expect(serialized).toMatchSnapshot();
 
-	t.deepEqual(deserialize(serialized), override);
+	expect(deserialize(serialized)).toEqual(override);
 });
