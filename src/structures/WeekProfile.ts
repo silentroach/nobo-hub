@@ -63,14 +63,12 @@ export const validate = (profile: WeekProfile) => {
 };
 
 // <Week profile id> <Name> <Profile>
+const WeekProfileRegexp = /^(?<id>\d+)\s(?<name>.*?)\s(?<profile>(?:\d{5},?)+)$/;
 
 export const deserialize = (input: string): WeekProfile => {
-	const matches = input.match(
-		/^(?<id>\d+)\s(?<name>.*?)\s(?<profile>(?:\d{5},?)+)$/
-	);
-
-	if (!matches) {
-		throw new TypeError('Invalid week profile info structure');
+	const matches = input.match(WeekProfileRegexp);
+	if (matches === null) {
+		throw new SyntaxError('Invalid week profile info structure');
 	}
 
 	const groups = matches.groups as {

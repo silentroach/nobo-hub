@@ -50,15 +50,13 @@ export const validate = (component: Component) => {
 };
 
 // <Serial number> <Status> <Name> <Reverse on/off?> <ZoneId> <Active override Id> <Temperature sensor for zone>
+const ComponentRegexp = /^(?<serial>\d{12})\s0\s(?<name>.*?)\s(?<reverse>0)\s(?<zoneId>-?\d{1,2})\s-1\s(?<sensor>-?\d{1,2})$/;
 
 export const deserialize = (input: string): Component => {
-	// @todo reverse
-	const matches = input.match(
-		/^(?<serial>\d{12})\s0\s(?<name>.*?)\s(?<reverse>0)\s(?<zoneId>-?\d{1,2})\s-1\s(?<sensor>-?\d{1,2})$/
-	);
-
-	if (!matches) {
-		throw new TypeError('Invalid component info structure');
+	// @todo <reverse>
+	const matches = input.match(ComponentRegexp);
+	if (matches === null) {
+		throw new SyntaxError('Invalid component info structure');
 	}
 
 	const groups = matches.groups as {

@@ -62,14 +62,12 @@ export const validate = (override: Override) => {
 };
 
 // <Id> <Mode> <Type> <End time> <Start time> <Override target> <Override target id>
+const OverrideRegexp = /^(?<id>\d+)\s(?<mode>\d)\s(?<type>\d)\s(?<end>-1)\s(?<start>-1)\s(?<target>\d)\s(?<targetId>-?\d+)$/;
 
 export const deserialize = (input: string): Override => {
-	const matches = input.match(
-		/^(?<id>\d+)\s(?<mode>\d)\s(?<type>\d)\s(?<end>-1)\s(?<start>-1)\s(?<target>\d)\s(?<targetId>-?\d+)$/
-	);
-
-	if (!matches) {
-		throw new TypeError('Invalid override info structure');
+	const matches = input.match(OverrideRegexp);
+	if (matches === null) {
+		throw new SyntaxError('Invalid override info structure');
 	}
 
 	const groups = matches.groups as {

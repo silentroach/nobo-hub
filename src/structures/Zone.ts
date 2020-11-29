@@ -62,14 +62,12 @@ export const validate = (zone: Zone) => {
 };
 
 // <Zone id> <Name> <Active week profile id> <Comfort temperature> <Eco temperature> <Allow overrides> <Active override id>
+const ZoneRegexp = /^(?<id>\d+)\s(?<name>.*?)\s(?<week>\d+)\s(?<comfort>\d+)\s(?<eco>\d+)\s(?<overrides>[10])\s1$/;
 
 export const deserialize = (input: string): Zone => {
-	const matches = input.match(
-		/^(?<id>\d+)\s(?<name>.*?)\s(?<week>\d+)\s(?<comfort>\d+)\s(?<eco>\d+)\s(?<overrides>[10])\s1$/
-	);
-
-	if (!matches) {
-		throw new TypeError('Invalid zone info structure');
+	const matches = input.match(ZoneRegexp);
+	if (matches === null) {
+		throw new SyntaxError('Invalid zone info structure');
 	}
 
 	const groups = matches.groups as {

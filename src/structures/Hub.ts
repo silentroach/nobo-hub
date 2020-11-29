@@ -12,14 +12,12 @@ export interface Hub {
 
 // <Serial number> <Name> <AwayOverrideLength> <ActiveOverrideId>
 // <SoftwareVersion> <HardwareVersion> <ProductionDate>
+const HubRegexp = /^(?<serial>\d{12})\s(?<name>.*?)\s(?<overrideLength>\d+)\s(?<override>-?\d+)\s(?<soft>\d+)\s(?<hard>[a-z\d._]+)\s(?<date>\d{8})$/;
 
 export const deserialize = (input: string): Hub => {
-	const matches = input.match(
-		/^(?<serial>\d{12})\s(?<name>.*?)\s(?<overrideLength>\d+)\s(?<override>-?\d+)\s(?<soft>\d+)\s(?<hard>[a-z\d._]+)\s(?<date>\d{8})$/
-	);
-
-	if (!matches) {
-		throw new TypeError('Invalid hub info structure');
+	const matches = input.match(HubRegexp);
+	if (matches === null) {
+		throw new SyntaxError('Invalid hub info structure');
 	}
 
 	const groups = matches.groups as {

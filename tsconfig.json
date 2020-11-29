@@ -6,7 +6,7 @@
 		"lib": ["es2019"],
 
 		"strict": true,
-		"sourceMap": false,
+		"sourceMap": true,
 
 		"declaration": true,
 
