@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`serialization name with utf 1`] = `"1 zone 😎 1 7 7 0 1"`;
+exports[`serialization name with utf 1`] = `"1 zone 😎 1 7 7 0 -1"`;
 
-exports[`serialization should escape spaces in name 1`] = `"1 zone with spaces 1 7 7 0 1"`;
+exports[`serialization should escape spaces in name 1`] = `"1 zone with spaces 1 7 7 0 -1"`;
 
-exports[`serialization should serialize/deserialize minimal component info 1`] = `"1 zone 1 7 7 0 1"`;
+exports[`serialization should serialize/deserialize minimal component info 1`] = `"1 zone 1 7 7 0 -1"`;

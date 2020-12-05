@@ -62,7 +62,7 @@ export const validate = (zone: Zone) => {
 };
 
 // <Zone id> <Name> <Active week profile id> <Comfort temperature> <Eco temperature> <Allow overrides> <Active override id>
-const ZoneRegexp = /^(?<id>\d+)\s(?<name>.*?)\s(?<week>\d+)\s(?<comfort>\d+)\s(?<eco>\d+)\s(?<overrides>[10])\s1$/;
+const ZoneRegexp = /^(?<id>\d+)\s(?<name>.*?)\s(?<week>\d+)\s(?<comfort>\d+)\s(?<eco>\d+)\s(?<overrides>[10])\s-1$/;
 
 export const deserialize = (input: string): Zone => {
 	const matches = input.match(ZoneRegexp);
@@ -98,5 +98,5 @@ export const serialize = (zone: Zone) =>
 		zone.comfortTemperature,
 		zone.ecoTemperature,
 		zone.allowOverrides ? 1 : 0,
-		/** active override id, reserved, not used */ 1,
+		/** active override id, reserved, not used */ -1,
 	].join(' ');
